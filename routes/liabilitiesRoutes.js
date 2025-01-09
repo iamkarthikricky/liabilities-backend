@@ -1,5 +1,5 @@
 const express = require("express");
-const { postLiability, getLiabilities} = require("../controllers/liabilitiesController");
+const { postLiability, getLiabilities} = require("../controllers/LiabilitiesController");
 
 const router = express.Router();
 
