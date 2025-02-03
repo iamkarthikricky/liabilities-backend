@@ -81,7 +81,8 @@ const postLiability = async (req, res) => {
 
 const getLiabilities = async (req, res) => {
   try {
-    const loans = await CurrentLoan.find();
+    const loans = await CurrentLoan.find({ status: true });
+
     const response = loans.map((loan) => {
       const { principal, tenure, remainingTenure, interest, GST } = loan;
       const { currentEMI, totalOutstanding, totalPayable } = calculateMonthlyInterestAndReducingPrincipal(

@@ -7,7 +7,8 @@ const liabilitiesSchema = new mongoose.Schema({
     remainingTenure:{ type: Number, required: true },
     interest:{ type: Number, required: true },
     GST:{ type: Number },
-    dueDate: { type: Date, default: Date.now } // New field with default value
+    dueDate: { type: Date, default: Date.now }, // New field with default value
+    status: { type: Boolean, default: false } // New field with default value
 });
 
 
