@@ -83,26 +83,26 @@ const getLiabilities = async (req, res) => {
   try {
     const loans = await CurrentLoan.find({ status: true });
 
-    const response = loans.map((loan) => {
-      const { principal, tenure, remainingTenure, interest, GST } = loan;
+    let totals = { totalEMI: 0, totalOutstanding: 0, totalPayable: 0, totalPrincipal: 0 };
+
+    const loansData = loans.map(({ principal, tenure, remainingTenure, interest, GST, _doc }) => {
       const { currentEMI, totalOutstanding, totalPayable } = calculateMonthlyInterestAndReducingPrincipal(
-          principal,
-          interest,
-          tenure,
-          remainingTenure,
-          GST
+        principal, interest, tenure, remainingTenure, GST
       );
-      return {
-       
-          ...loan._doc,
-          currentEMI,
-          totalOutstanding,
-          totalPayable,
-      };});
-    res.status(200).json(response);
+
+      totals.totalEMI += currentEMI;
+      totals.totalOutstanding += totalOutstanding;
+      totals.totalPayable += totalPayable;
+      totals.totalPrincipal += principal;
+
+      return { ..._doc, currentEMI, totalOutstanding, totalPayable };
+    });
+
+    res.status(200).json({ ...totals, loans:loansData });
   } catch (error) {
     res.status(404).json({ message: error.message });
   }
 };
+
 
 module.exports = { postLiability, getLiabilities };
