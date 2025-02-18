@@ -59,7 +59,7 @@ const postLiability = async (req, res) => {
     }
 
     // Handle single liability (not an array)
-    const { lenderName, principal, tenure, remainingTenure, interest, GST } = data;
+    const { lenderName, principal, tenure, remainingTenure, interest, GST,status } = data;
     const newLoan = new CurrentLoan({
       lenderName,
       principal,
@@ -67,6 +67,7 @@ const postLiability = async (req, res) => {
       remainingTenure,
       interest,
       GST,
+      status
     });
     await newLoan.save();
     res.status(201).json({
